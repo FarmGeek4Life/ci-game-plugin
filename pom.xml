@@ -1,17 +1,24 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.jenkins-ci.plugins</groupId>
-        <artifactId>plugin</artifactId>
-        <version>1.580.3</version>
-    </parent>
+  <parent>
+    <groupId>org.jenkins-ci.plugins</groupId>
+    <artifactId>plugin</artifactId>
+    <version>3.40</version>
+  </parent>
 
   <artifactId>ci-game</artifactId>
   <packaging>hpi</packaging>
   <version>1.27-SNAPSHOT</version>
   <name>Jenkins Continuous Integration game</name>
   <url>http://wiki.jenkins-ci.org/display/JENKINS/The+Continuous+Integration+Game+plugin</url>
+
+  <properties>
+    <jenkins.version>2.89.1</jenkins.version>
+    <java.level>8</java.level>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <findbugs.failOnError>false</findbugs.failOnError>
+  </properties>
 
   <scm>
     <connection>scm:git:github.com:jenkinsci/ci-game-plugin.git</connection>
@@ -53,136 +60,186 @@
     </developer>
   </developers>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
-
-  <build>
-    <pluginManagement>
-        <plugins>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
-            </plugin>
-            <plugin>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <version>2.5</version>
-            </plugin>
-            <plugin>
-                <artifactId>maven-install-plugin</artifactId>
-                <version>2.3.1</version>
-            </plugin>
-        </plugins>
-    </pluginManagement>
-    <plugins>
-      <plugin>
-        <artifactId>maven-release-plugin</artifactId>
-        <version>2.5</version>
-        <configuration>
-          <goals>deploy</goals>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-
-
   <dependencies>
-
-      <dependency>
+    <dependency>
       <groupId>org.jenkins-ci.main</groupId>
-      <artifactId>jenkins-test-harness</artifactId>
-      <version>${project.parent.version}</version>
-      <scope>test</scope>
-    </dependency>
-	  <dependency>
-		  <groupId>org.apache.ant</groupId>
-		  <artifactId>ant</artifactId>
-		  <version>1.8.3</version>
-		  <scope>test</scope>
-	  </dependency>
-    <dependency>
-      <groupId>org.jvnet.hudson.plugins</groupId>
-      <artifactId>checkstyle</artifactId>
-      <version>3.40</version>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>org.jvnet.hudson.plugins</groupId>
-      <artifactId>findbugs</artifactId>
-      <version>4.50</version>
-      <optional>true</optional>
+      <artifactId>maven-plugin</artifactId>
+      <version>2.12</version>
       <exclusions>
-        <exclusion><!-- collides with our own dom4j -->
-          <groupId>dom4j</groupId>
-          <artifactId>dom4j</artifactId>
+        <exclusion><!-- collides with jenkins-core version -->
+          <groupId>org.apache.ant</groupId>
+          <artifactId>ant</artifactId>
+        </exclusion>
+        <exclusion><!-- collides with jenkins-core version -->
+          <groupId>commons-net</groupId>
+          <artifactId>commons-net</artifactId>
+        </exclusion>
+        <exclusion><!-- collides with jenkins-core version -->
+          <groupId>com.google.inject</groupId>
+          <artifactId>guice</artifactId>
+        </exclusion>
+        <exclusion><!-- internal collisions -->
+          <groupId>org.apache.maven</groupId>
+          <artifactId>maven-aether-provider</artifactId>
+        </exclusion>
+        <exclusion><!-- collides with jenkins-core version -->
+          <groupId>org.apache.maven</groupId>
+          <artifactId>maven-core</artifactId>
+        </exclusion>
+        <exclusion><!-- collides with jenkins-core version -->
+          <groupId>org.apache.maven</groupId>
+          <artifactId>maven-embedder</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
     <dependency>
       <groupId>org.jvnet.hudson.plugins</groupId>
-      <artifactId>violations</artifactId>
-      <version>0.5.4</version>
+      <artifactId>checkstyle</artifactId>
+      <version>3.47</version>
       <optional>true</optional>
+      <exclusions>
+        <exclusion><!-- collides with parent pom version -->
+          <groupId>asm</groupId>
+          <artifactId>asm</artifactId>
+        </exclusion>
+        <exclusion><!-- collides with other dependency versions -->
+          <groupId>org.jenkins-ci.plugins</groupId>
+          <artifactId>matrix-project</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.jvnet.hudson.plugins</groupId>
+      <artifactId>findbugs</artifactId>
+      <version>4.69</version>
+      <optional>true</optional>
+      <exclusions>
+        <exclusion><!-- collides with parent pom version -->
+          <groupId>dom4j</groupId>
+          <artifactId>dom4j</artifactId>
+        </exclusion>
+        <exclusion><!-- collides with other dependency versions -->
+          <groupId>org.jenkins-ci.plugins</groupId>
+          <artifactId>matrix-project</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.plugins</groupId>
+      <artifactId>violations</artifactId>
+      <version>0.7.11</version>
+      <optional>true</optional>
+      <exclusions>
+        <exclusion><!-- collides with jenkins core version -->
+          <groupId>xpp3</groupId>
+          <artifactId>xpp3</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.jvnet.hudson.plugins</groupId>
       <artifactId>tasks</artifactId>
-      <version>4.0</version>
+      <version>4.50</version>
       <optional>true</optional>
+      <exclusions>
+        <exclusion><!-- collides with our version and other dependencies -->
+          <groupId>org.jvnet.hudson.main</groupId>
+          <artifactId>maven-plugin</artifactId>
+        </exclusion>
+        <exclusion><!-- collides with other dependency versions -->
+          <groupId>org.jenkins-ci.plugins</groupId>
+          <artifactId>matrix-project</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.jvnet.hudson.plugins</groupId>
       <artifactId>pmd</artifactId>
-      <version>3.1</version>
+      <version>3.46</version>
       <optional>true</optional>
+      <exclusions>
+        <exclusion><!-- collides with our version and other dependencies -->
+          <groupId>org.jvnet.hudson.main</groupId>
+          <artifactId>maven-plugin</artifactId>
+        </exclusion>
+        <exclusion><!-- collides with parent pom version -->
+          <groupId>org.apache.commons</groupId>
+          <artifactId>commons-lang3</artifactId>
+        </exclusion>
+        <exclusion><!-- collides with jenkins core version -->
+          <groupId>jaxen</groupId>
+          <artifactId>jaxen</artifactId>
+        </exclusion>
+        <exclusion><!-- collides with other dependency versions -->
+          <groupId>org.jenkins-ci.plugins</groupId>
+          <artifactId>matrix-project</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.jvnet.hudson.plugins</groupId>
       <artifactId>warnings</artifactId>
-      <version>3.0</version>
+      <version>4.59</version>
       <optional>true</optional>
+      <exclusions>
+        <exclusion><!-- collides with our version and other dependencies -->
+          <groupId>org.jvnet.hudson.main</groupId>
+          <artifactId>maven-plugin</artifactId>
+        </exclusion>
+        <exclusion><!-- collides with other dependency versions -->
+          <groupId>org.jenkins-ci.plugins</groupId>
+          <artifactId>matrix-project</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.jvnet.hudson.plugins</groupId>
       <artifactId>analysis-core</artifactId>
-      <version>1.58</version>
+      <version>1.82</version>
+      <optional>true</optional>
+      <exclusions>
+        <exclusion><!-- collides with parent pom version -->
+          <groupId>org.apache.commons</groupId>
+          <artifactId>commons-lang3</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.jenkins-ci.plugins</groupId>
       <artifactId>structs</artifactId>
-      <version>1.3</version>
+      <version>1.6</version>
     </dependency>
     <dependency>
       <groupId>org.jenkins-ci.plugins</groupId>
       <artifactId>jacoco</artifactId>
-      <version>1.0.18</version>
+      <version>2.1.0</version>
       <optional>true</optional>
       <exclusions>
         <exclusion>
           <groupId>org.jacoco</groupId>
           <artifactId>jacoco-maven-plugin</artifactId>
         </exclusion>
+        <exclusion><!-- collides with parent pom version -->
+          <groupId>org.ow2.asm</groupId>
+          <artifactId>asm</artifactId>
+        </exclusion>
+        <exclusion><!-- collides with parent pom version -->
+          <groupId>org.ow2.asm</groupId>
+          <artifactId>asm-commons</artifactId>
+        </exclusion>
       </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <version>1.8.5</version>
-      <scope>test</scope>
-	  <exclusions>
-		<exclusion>
-			<groupId>org.hamcrest</groupId>
-			<artifactId>hamcrest-core</artifactId>
-		</exclusion>
-	  </exclusions>
     </dependency>
 	<dependency>
       <groupId>org.jenkins-ci.plugins</groupId>
       <artifactId>junit</artifactId>
-      <version>1.0</version>
+      <version>1.20</version>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
-
 
     <repositories>
         <repository>

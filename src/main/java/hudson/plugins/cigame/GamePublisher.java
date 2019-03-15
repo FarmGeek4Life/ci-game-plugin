@@ -17,13 +17,13 @@ import hudson.model.User;
 import hudson.model.Cause;
 import hudson.model.TopLevelItem;
 import hudson.model.Run;
-import hudson.model.Hudson;
 import hudson.plugins.cigame.model.RuleBook;
 import hudson.plugins.cigame.model.ScoreCard;
 import hudson.scm.ChangeLogSet;
 import hudson.scm.ChangeLogSet.Entry;
 import hudson.tasks.BuildStepMonitor;
 import hudson.tasks.Notifier;
+import jenkins.model.Jenkins;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 public class GamePublisher extends Notifier {
@@ -106,7 +106,7 @@ public class GamePublisher extends Notifier {
     private AbstractBuild getBuildByUpstreamCause(List<Cause> causes,BuildListener listener ){
         for(Cause cause: (List<Cause>) causes){
             if(cause instanceof Cause.UpstreamCause) {
-                TopLevelItem upstreamProject = Hudson.getInstance().getItemByFullName(((Cause.UpstreamCause)cause).getUpstreamProject(), TopLevelItem.class);
+                TopLevelItem upstreamProject = Jenkins.getInstance().getItemByFullName(((Cause.UpstreamCause)cause).getUpstreamProject(), TopLevelItem.class);
                 if(upstreamProject instanceof AbstractProject){
                     int buildId = ((Cause.UpstreamCause)cause).getUpstreamBuild();
                     Run run = ((AbstractProject) upstreamProject).getBuildByNumber(buildId);

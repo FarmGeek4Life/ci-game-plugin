@@ -91,8 +91,8 @@ public class DefaultWarningsRuleTest {
         when(previousBuild.getResult()).thenReturn(Result.FAILURE);
         WarningsResult result = mock(WarningsResult.class);
         WarningsResult previosResult = mock(WarningsResult.class);
-        WarningsResultAction action = new WarningsResultAction(build, mock(HealthDescriptor.class), result);
-        WarningsResultAction previousAction = new WarningsResultAction(previousBuild,mock(HealthDescriptor.class), previosResult);
+        WarningsResultAction action = new WarningsResultAction(build, mock(HealthDescriptor.class), result, "test");
+        WarningsResultAction previousAction = new WarningsResultAction(previousBuild,mock(HealthDescriptor.class), previosResult, "test");
         when(build.getActions(WarningsResultAction.class)).thenReturn(Arrays.asList(action));
         when(previousBuild.getActions(WarningsResultAction.class)).thenReturn(Arrays.asList(previousAction));
         
@@ -114,8 +114,8 @@ public class DefaultWarningsRuleTest {
         WarningsResult result = mock(WarningsResult.class);
         WarningsResult previosResult = mock(WarningsResult.class);
         when(previosResult.hasError()).thenReturn(true);
-        WarningsResultAction action = new WarningsResultAction(build, mock(HealthDescriptor.class), result);
-        WarningsResultAction previousAction = new WarningsResultAction(previousBuild,mock(HealthDescriptor.class), previosResult);
+        WarningsResultAction action = new WarningsResultAction(build, mock(HealthDescriptor.class), result, "test");
+        WarningsResultAction previousAction = new WarningsResultAction(previousBuild,mock(HealthDescriptor.class), previosResult, "test");
         when(build.getActions(WarningsResultAction.class)).thenReturn(Arrays.asList(action));
         when(previousBuild.getActions(WarningsResultAction.class)).thenReturn(Arrays.asList(previousAction));
         
@@ -151,7 +151,7 @@ public class DefaultWarningsRuleTest {
     
     private static void addWarnings(AbstractBuild build, int numberOfWarnings) {
     	WarningsResult result = mock(WarningsResult.class);
-        WarningsResultAction action = new WarningsResultAction(build, mock(HealthDescriptor.class), result);
+        WarningsResultAction action = new WarningsResultAction(build, mock(HealthDescriptor.class), result, "test");
         when(build.getActions(WarningsResultAction.class)).thenReturn(Arrays.asList(action));
         
         when(result.getNumberOfAnnotations()).thenReturn(numberOfWarnings);

@@ -12,8 +12,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
+import org.jvnet.hudson.test.JenkinsRule;
 
 public class ScoreCardTest {
+
+    @org.junit.Rule
+    public JenkinsRule j = new JenkinsRule();
 
     @Test(expected=IllegalStateException.class)
     public void testIllegalStateThrownInGetScores() {

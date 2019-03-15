@@ -17,9 +17,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.jvnet.hudson.test.Bug;
-import org.jvnet.hudson.test.HudsonTestCase;
 import org.jvnet.hudson.test.JenkinsRule;
-import org.mockito.Mockito;
 
 @SuppressWarnings("unchecked")
 public class IncreasingPassedTestsRuleTest {

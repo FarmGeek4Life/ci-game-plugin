@@ -269,8 +269,7 @@ public class DefaultJacocoRuleTest {
 
     private static void addCoverage(AbstractBuild<?, ?> build, int missed, int covered) {
         final Map<Type, Coverage> ratios = Collections.emptyMap();
-        final JacocoBuildAction action =
-            new JacocoBuildAction(build, null, ratios, null, mock(BuildListener.class), null, null);
+        final JacocoBuildAction action = new JacocoBuildAction(ratios, null, mock(BuildListener.class), null, null);
 
         action.getLineCoverage().accumulate(missed, covered);
 

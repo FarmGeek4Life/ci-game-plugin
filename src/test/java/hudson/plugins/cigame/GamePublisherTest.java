@@ -6,12 +6,12 @@ import static org.hamcrest.CoreMatchers.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import hudson.model.AbstractBuild;
 import hudson.model.Action;
 import hudson.model.User;
+import hudson.model.UserProperty;
 import hudson.plugins.cigame.model.Rule;
 import hudson.plugins.cigame.model.RuleBook;
 import hudson.plugins.cigame.model.RuleResult;
@@ -21,10 +21,15 @@ import hudson.scm.ChangeLogSet.Entry;
 
 import org.junit.Test;
 import org.jvnet.hudson.test.Bug;
+import org.jvnet.hudson.test.JenkinsRule;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 @SuppressWarnings("unchecked")
 public class GamePublisherTest {
+
+    @org.junit.Rule
+    public JenkinsRule j = new JenkinsRule();
 
     @Test
     public void assertScoreCardActionIsAddedToBuild() throws Exception {
@@ -59,7 +64,12 @@ public class GamePublisherTest {
         mockChangeSetInBuild(build, userWithoutProperty);
 
         assertThat(new GamePublisher().perform(build, createRuleBook(5d), true, null), is(true));
-        verify(userWithoutProperty).addProperty(new UserScoreProperty(5, true, anyList()));
+        ArgumentCaptor<UserProperty> userPropertyCaptor = ArgumentCaptor.forClass(UserProperty.class);
+        verify(userWithoutProperty).addProperty(userPropertyCaptor.capture());
+        UserScoreProperty userScoreProperty = (UserScoreProperty)userPropertyCaptor.getValue();
+        assertNotNull(userScoreProperty);
+        assertThat(userScoreProperty.getScore(), is(5d));
+        assertThat(userScoreProperty.isParticipatingInGame(), is(true));
     }
 
     @Bug(4470)
