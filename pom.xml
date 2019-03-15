@@ -65,6 +65,7 @@
       <groupId>org.jenkins-ci.main</groupId>
       <artifactId>maven-plugin</artifactId>
       <version>2.12</version>
+      <optional>true</optional>
       <exclusions>
         <exclusion><!-- collides with jenkins-core version -->
           <groupId>org.apache.ant</groupId>

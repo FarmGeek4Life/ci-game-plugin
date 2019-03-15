@@ -1,18 +1,13 @@
 package hudson.plugins.cigame.model;
 
-import hudson.maven.MavenBuild;
-import hudson.maven.MavenModule;
-import hudson.maven.MavenModuleSetBuild;
 import hudson.model.BuildListener;
 import hudson.model.AbstractBuild;
-import hudson.plugins.cigame.util.BuildUtil;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
+import jenkins.model.Jenkins;
 
 import org.kohsuke.stapler.export.Exported;
 import org.kohsuke.stapler.export.ExportedBean;
@@ -66,43 +61,30 @@ public class ScoreCard {
             Collections.sort(scores);
         }
     }
-    
+
+    private boolean isMavenPluginAvailable() {
+        return Jenkins.getInstance().getPlugin("maven-plugin") != null;
+    }
+
     @SuppressWarnings({ "unchecked", "rawtypes" })
     RuleResult<?> evaluate(AbstractBuild<?, ?> build, Rule rule) {
-        if (rule instanceof AggregatableRule<?> && build instanceof MavenModuleSetBuild) {
+        if (rule instanceof AggregatableRule<?>) {
             AggregatableRule aRule = (AggregatableRule<?>)rule;
-            MavenModuleSetBuild mavenModuleSetBuild = (MavenModuleSetBuild)build;
-                
-            List<RuleResult> results = new ArrayList<RuleResult>();
+            RuleResult<?> mavenResult = null;
             
-            for (Map.Entry<MavenModule, MavenBuild> e : mavenModuleSetBuild.getModuleLastBuilds().entrySet()) {
-            	MavenBuild moduleBuild = e.getValue();
-                if (moduleBuild != null) {
-                	AbstractBuild<?, ?> previousBuild = BuildUtil.getPreviousBuiltBuild(moduleBuild);
-                    results.add(aRule.evaluate(previousBuild, moduleBuild));
-                } else {
-                	// module was probably removed from multimodule
-                	if (mavenModuleSetBuild.getPreviousBuild() != null) {
-                		MavenModuleSetBuild prevBuild = mavenModuleSetBuild.getPreviousBuild();
-                		AbstractBuild<?, ?> prevModuleBuild = prevBuild.getModuleLastBuilds().get(e.getKey());
-                		if (prevModuleBuild.getResult() == null) {
-                			prevModuleBuild = BuildUtil.getPreviousBuiltBuild(prevModuleBuild);
-                		}
-                		results.add(aRule.evaluate(prevModuleBuild, null));
-                	} else {
-                		//results.add(aRule.evaluate(null, null));
-                		return RuleResult.EMPTY_RESULT;
-                	}
-                }
+            if (isMavenPluginAvailable()) {
+                mavenResult = ScoreCardMaven.evaluate(build, aRule);
             }
-            return aRule.aggregate(results);
+            
+            if (mavenResult != null) {
+                // Not Null = Maven Project Build
+                return mavenResult;
+            } else {
+                // mvnResult == null: can't load maven-plugin, or not a Maven Project Build
+                return aRule.evaluate(build.getPreviousBuild(), build);
+            }
         } else {
-        	if (rule instanceof AggregatableRule<?>) {
-        		AggregatableRule<?> aRule = (AggregatableRule<?>) rule;
-        		return aRule.evaluate(build.getPreviousBuild(), build);
-        	} else {
-        		return rule.evaluate(build);
-        	}
+            return rule.evaluate(build);
         }
     }
     
