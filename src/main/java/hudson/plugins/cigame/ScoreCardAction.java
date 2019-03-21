@@ -11,11 +11,11 @@ import org.kohsuke.stapler.export.ExportedBean;
 
 import hudson.model.AbstractBuild;
 import hudson.model.Action;
-import hudson.model.Hudson;
 import hudson.model.User;
 import hudson.plugins.cigame.model.ScoreCard;
 import hudson.scm.ChangeLogSet;
 import hudson.scm.ChangeLogSet.Entry;
+import jenkins.model.Jenkins;
 
 /**
  * Score card for a certain build
@@ -59,7 +59,7 @@ public class ScoreCardAction implements Action {
 
     @Exported
     public Collection<User> getParticipants() {
-        return getParticipants(Hudson.getInstance().getDescriptorByType(GameDescriptor.class).getNamesAreCaseSensitive());
+        return getParticipants(Jenkins.getInstance().getDescriptorByType(GameDescriptor.class).getNamesAreCaseSensitive());
     }
     
     Collection<User> getParticipants(boolean usernameIsCasesensitive) {

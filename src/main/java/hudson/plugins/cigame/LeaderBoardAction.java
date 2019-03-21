@@ -9,13 +9,13 @@ import java.util.List;
 
 import hudson.Extension;
 import hudson.model.Api;
-import hudson.model.Hudson;
 import hudson.model.RootAction;
 import hudson.model.User;
 import hudson.security.ACL;
 import hudson.security.AccessControlled;
 import hudson.security.Permission;
 import hudson.util.VersionNumber;
+import jenkins.model.Jenkins;
 
 import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.StaplerResponse;
@@ -23,7 +23,7 @@ import org.kohsuke.stapler.export.Exported;
 import org.kohsuke.stapler.export.ExportedBean;
 
 /**
- * Leader board for users participaing in the game.
+ * Leader board for users participating in the game.
  * 
  * @author Erik Ramfelt
  */
@@ -52,12 +52,12 @@ public class LeaderBoardAction implements RootAction, AccessControlled {
      */
     @Exported
     public List<UserScore> getUserScores() {
-        return getUserScores(User.getAll(), Hudson.getInstance().getDescriptorByType(GameDescriptor.class).getNamesAreCaseSensitive());
+        return getUserScores(User.getAll(), Jenkins.getInstance().getDescriptorByType(GameDescriptor.class).getNamesAreCaseSensitive());
     }
     
     @Exported
     public boolean isUserAvatarSupported() {
-        return new VersionNumber(Hudson.VERSION).isNewerThan(new VersionNumber("1.433"));
+        return new VersionNumber(Jenkins.VERSION).isNewerThan(new VersionNumber("1.433"));
     }
 
     List<UserScore> getUserScores(Collection<User> users, boolean usernameIsCasesensitive) {
@@ -98,7 +98,7 @@ public class LeaderBoardAction implements RootAction, AccessControlled {
     }
 
     public void doResetScores( StaplerRequest req, StaplerResponse rsp ) throws IOException {
-        if (Hudson.getInstance().getACL().hasPermission(Hudson.ADMINISTER)) {
+        if (Jenkins.getInstance().getACL().hasPermission(Jenkins.ADMINISTER)) {
             doResetScores(User.getAll());
         }
         rsp.sendRedirect2(req.getContextPath());
@@ -145,7 +145,7 @@ public class LeaderBoardAction implements RootAction, AccessControlled {
     }
 
     public ACL getACL() {
-        return Hudson.getInstance().getACL();
+        return Jenkins.getInstance().getACL();
     }
 
     public void checkPermission(Permission p) {

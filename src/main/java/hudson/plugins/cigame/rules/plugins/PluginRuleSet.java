@@ -2,9 +2,9 @@ package hudson.plugins.cigame.rules.plugins;
 
 import java.util.Collection;
 
-import hudson.model.Hudson;
 import hudson.plugins.cigame.model.Rule;
 import hudson.plugins.cigame.model.RuleSet;
+import jenkins.model.Jenkins;
 
 /**
  * Rule set for plugins rules that will check if the plugin is installed or not.
@@ -32,7 +32,7 @@ public class PluginRuleSet extends RuleSet {
      */
     @Override
     public boolean isAvailable() {
-        return (Hudson.getInstance().getPlugin(pluginName) != null);
+        return (Jenkins.getInstance().getPlugin(pluginName) != null);
     }
 
     /**

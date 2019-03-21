@@ -4,10 +4,10 @@ import org.kohsuke.stapler.StaplerRequest;
 
 import hudson.Extension;
 import hudson.Util;
-import hudson.model.Hudson;
 import hudson.model.User;
 import hudson.model.UserProperty;
 import hudson.model.UserPropertyDescriptor;
+import jenkins.model.Jenkins;
 import net.sf.json.JSONObject;
 
 /**
@@ -80,7 +80,7 @@ public class UserScorePropertyDescriptor extends UserPropertyDescriptor {
     
     private boolean checkUserScoreChange(String score) throws FormException {
         if (getCurrentUserScore() != getRequestScore(score)) {
-            if (!Hudson.getInstance().getACL().hasPermission(Hudson.ADMINISTER)) {
+            if (!Jenkins.getInstance().getACL().hasPermission(Jenkins.ADMINISTER)) {
                 throw new FormException(Messages.UserScore_Cheating_Message(), "score");
             }
         }
