@@ -44,6 +44,7 @@ public class Score implements Comparable<Score> {
         return value;
     }
 
+    @Override
     public int compareTo(Score o) {
         if (value == o.value) {
             return description.compareToIgnoreCase(o.description);

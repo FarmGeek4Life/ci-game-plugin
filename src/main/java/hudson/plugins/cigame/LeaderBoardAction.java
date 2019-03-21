@@ -33,14 +33,17 @@ public class LeaderBoardAction implements RootAction, AccessControlled {
 
     private static final long serialVersionUID = 1L;
 
+    @Override
     public String getDisplayName() {
         return Messages.Leaderboard_Title();
     }
 
+    @Override
     public String getIconFileName() {
         return GameDescriptor.ACTION_LOGO_MEDIUM;
     }
 
+    @Override
     public String getUrlName() {
         return "/cigame"; //$NON-NLS-1$
     }
@@ -85,6 +88,7 @@ public class LeaderBoardAction implements RootAction, AccessControlled {
         }
 
         Collections.sort(list, new Comparator<UserScore>() {
+            @Override
             public int compare(UserScore o1, UserScore o2) {
                 if (o1.score < o2.score)
                     return 1;
@@ -116,10 +120,10 @@ public class LeaderBoardAction implements RootAction, AccessControlled {
 
     
     @ExportedBean(defaultVisibility = 999)
-    public class UserScore {
-        private User user;
-        private double score;
-        private String description;
+    public static class UserScore {
+        private final User user;
+        private final double score;
+        private final String description;
 
         public UserScore(User user, double score, String description) {
             super();
@@ -144,14 +148,17 @@ public class LeaderBoardAction implements RootAction, AccessControlled {
         }
     }
 
+    @Override
     public ACL getACL() {
         return Jenkins.getInstance().getACL();
     }
 
+    @Override
     public void checkPermission(Permission p) {
         getACL().checkPermission(p);
     }
 
+    @Override
     public boolean hasPermission(Permission p) {
         return getACL().hasPermission(p);
     }

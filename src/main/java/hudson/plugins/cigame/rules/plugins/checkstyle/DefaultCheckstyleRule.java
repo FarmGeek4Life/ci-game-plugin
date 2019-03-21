@@ -16,8 +16,8 @@ import hudson.plugins.cigame.util.ActionRetriever;
  */
 public class DefaultCheckstyleRule implements AggregatableRule<Integer> {
 	
-    private int pointsForAddingAWarning;
-    private int pointsForRemovingAWarning;
+    private final int pointsForAddingAWarning;
+    private final int pointsForRemovingAWarning;
 
     public DefaultCheckstyleRule(int pointsForAddingAWarning, int pointsForRemovingAWarning) {
         this.pointsForAddingAWarning = pointsForAddingAWarning;

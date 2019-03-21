@@ -17,10 +17,10 @@ import java.util.List;
  */
 public class DefaultOpenTasksRule implements AggregatableRule<Integer> {
 
-    private int pointsForAddingAnAnnotation;
-    private int pointsForRemovingAnAnnotation;
+    private final int pointsForAddingAnAnnotation;
+    private final int pointsForRemovingAnAnnotation;
 
-    private Priority tasksPriority;
+    private final Priority tasksPriority;
 
     public DefaultOpenTasksRule(Priority tasksPriority,
             int pointsForAddingAnAnnotation, int pointsForRemovingAnAnnotation) {

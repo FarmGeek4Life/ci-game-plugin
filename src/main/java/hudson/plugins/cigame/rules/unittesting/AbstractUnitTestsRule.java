@@ -64,6 +64,7 @@ public abstract class AbstractUnitTestsRule implements AggregatableRule<Integer>
     }
     
     @SuppressWarnings("unchecked")
+    @Override
 	public final RuleResult<Integer> evaluate(AbstractBuild<?, ?> previousBuild,
 			AbstractBuild<?, ?> build) {
 
@@ -129,6 +130,7 @@ public abstract class AbstractUnitTestsRule implements AggregatableRule<Integer>
         return null;
 	}
     
+    @Override
 	public final RuleResult<Integer> evaluate(AbstractBuild<?, ?> build) {
 		throw new UnsupportedOperationException();
 	}

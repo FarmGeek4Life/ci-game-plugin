@@ -16,8 +16,8 @@ import hudson.plugins.warnings.WarningsResultAction;
  */
 public class DefaultWarningsRule implements AggregatableRule<Integer> {
 
-    private int pointsForAddingAWarning;
-    private int pointsForRemovingAWarning;
+    private final int pointsForAddingAWarning;
+    private final int pointsForRemovingAWarning;
 
     public DefaultWarningsRule(int pointsForAddingAWarning, int pointsForRemovingAWarning) {
         this.pointsForAddingAWarning = pointsForAddingAWarning;

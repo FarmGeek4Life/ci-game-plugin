@@ -27,9 +27,9 @@ public class ScoreCardAction implements Action {
 
     private static final long serialVersionUID = 1L;
 
-    private AbstractBuild<?, ?> build;
+    private final AbstractBuild<?, ?> build;
 
-    private ScoreCard scorecard;
+    private final ScoreCard scorecard;
 
     public ScoreCardAction(ScoreCard scorecard, AbstractBuild<?, ?> b) {
         build = b;
@@ -40,14 +40,17 @@ public class ScoreCardAction implements Action {
         return build;
     }
 
+    @Override
     public String getDisplayName() {
         return Messages.Scorecard_Title(); //$NON-NLS-1$
     }
 
+    @Override
     public String getIconFileName() {
         return GameDescriptor.ACTION_LOGO_MEDIUM;
     }
 
+    @Override
     public String getUrlName() {
         return "cigame"; //$NON-NLS-1$
     }
@@ -80,6 +83,7 @@ public class ScoreCardAction implements Action {
     }
     
     private static class UserDisplayNameComparator implements Comparator<User> {
+        @Override
         public int compare(User arg0, User arg1) {
             return arg0.getDisplayName().compareToIgnoreCase(arg1.getDisplayName());
         }            

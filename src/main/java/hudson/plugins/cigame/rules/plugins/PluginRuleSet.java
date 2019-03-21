@@ -11,7 +11,7 @@ import jenkins.model.Jenkins;
  */
 public class PluginRuleSet extends RuleSet {
 
-    private String pluginName;
+    private final String pluginName;
     private transient boolean isInitalized = false;
 
     /**

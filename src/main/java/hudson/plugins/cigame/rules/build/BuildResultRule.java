@@ -22,10 +22,12 @@ public class BuildResultRule implements Rule {
         this.failurePoints = failurePoints;
     }
 
+    @Override
     public String getName() {
         return Messages.BuildRuleSet_BuildResult(); //$NON-NLS-1$
     }
 
+    @Override
     public RuleResult evaluate(AbstractBuild<?, ?> build) {
         Result result = build.getResult();
         Result lastResult = null;

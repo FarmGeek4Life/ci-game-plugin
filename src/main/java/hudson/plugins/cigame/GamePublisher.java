@@ -152,11 +152,13 @@ public class GamePublisher extends Notifier {
     }
 
     public static class UsernameCaseinsensitiveComparator implements Comparator<User> {
+        @Override
         public int compare(User arg0, User arg1) {
             return arg0.getId().compareToIgnoreCase(arg1.getId());
         }
     }
 
+    @Override
     public BuildStepMonitor getRequiredMonitorService() {
         return BuildStepMonitor.BUILD;
     }
