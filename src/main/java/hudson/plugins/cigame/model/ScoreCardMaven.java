@@ -51,8 +51,8 @@ public class ScoreCardMaven {
                 results.add(aRule.evaluate(previousBuild, moduleBuild));
             } else {
                 // module was probably removed from multimodule
-                if (mavenModuleSetBuild.getPreviousBuild() != null) {
-                    MavenModuleSetBuild prevBuild = mavenModuleSetBuild.getPreviousBuild();
+                MavenModuleSetBuild prevBuild = mavenModuleSetBuild.getPreviousBuild();
+                if (prevBuild != null) {                    
                     AbstractBuild<?, ?> prevModuleBuild = prevBuild.getModuleLastBuilds().get(e.getKey());
                     if (prevModuleBuild.getResult() == null) {
                         prevModuleBuild = BuildUtil.getPreviousBuiltBuild(prevModuleBuild);

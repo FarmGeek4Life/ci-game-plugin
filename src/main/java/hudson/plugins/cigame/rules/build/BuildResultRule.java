@@ -31,8 +31,9 @@ public class BuildResultRule implements Rule {
     public RuleResult evaluate(AbstractBuild<?, ?> build) {
         Result result = build.getResult();
         Result lastResult = null;
-        if (build.getPreviousBuild() != null) {
-            lastResult = build.getPreviousBuild().getResult();
+        AbstractBuild<?, ?> prevBuild = build.getPreviousBuild();
+        if (prevBuild != null) {
+            lastResult = prevBuild.getResult();
         }
         return evaluate(result, lastResult);
     }

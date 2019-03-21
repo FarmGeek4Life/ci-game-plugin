@@ -90,11 +90,7 @@ public class LeaderBoardAction implements RootAction, AccessControlled {
         Collections.sort(list, new Comparator<UserScore>() {
             @Override
             public int compare(UserScore o1, UserScore o2) {
-                if (o1.score < o2.score)
-                    return 1;
-                if (o1.score > o2.score)
-                    return -1;
-                return 0;
+                return Double.compare(o2.score, o1.score);
             }
         });
 

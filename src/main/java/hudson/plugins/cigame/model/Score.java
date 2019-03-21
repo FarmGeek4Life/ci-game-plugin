@@ -1,5 +1,6 @@
 package hudson.plugins.cigame.model;
 
+import java.util.Objects;
 import org.kohsuke.stapler.export.Exported;
 import org.kohsuke.stapler.export.ExportedBean;
 
@@ -46,9 +47,39 @@ public class Score implements Comparable<Score> {
 
     @Override
     public int compareTo(Score o) {
-        if (value == o.value) {
+        int byValue = Double.compare(o.value, value);
+        if (byValue == 0) {
             return description.compareToIgnoreCase(o.description);
         }
-        return (int) Math.round(o.value - value);
+        return byValue;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 41 * hash + (int) (Double.doubleToLongBits(this.value) ^ (Double.doubleToLongBits(this.value) >>> 32));
+        hash = 41 * hash + Objects.hashCode(this.description);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Score other = (Score) obj;
+        if (Double.doubleToLongBits(this.value) != Double.doubleToLongBits(other.value)) {
+            return false;
+        }
+        if (!Objects.equals(this.description, other.description)) {
+            return false;
+        }
+        return true;
     }
 }

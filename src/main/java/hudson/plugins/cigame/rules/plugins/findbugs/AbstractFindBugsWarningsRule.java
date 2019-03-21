@@ -50,18 +50,24 @@ public abstract class AbstractFindBugsWarningsRule implements AggregatableRule<I
 	@Override
 	public final RuleResult<Integer> evaluate(AbstractBuild<?, ?> previousBuild,
 			AbstractBuild<?, ?> build) {
-    	if (build != null && build.getResult() != null && build.getResult().isWorseOrEqualTo(Result.FAILURE)) {
-    		return EMPTY_RESULT;
-    	}
+        if (build != null) {
+            Result buildResult = build.getResult();
+            if (buildResult != null && buildResult.isWorseOrEqualTo(Result.FAILURE)) {
+                return EMPTY_RESULT;
+            }
+        }
     	
     	if (previousBuild == null) {
     		if ( !(build instanceof MavenBuild)) {
     			// backward compatibility
     			return EMPTY_RESULT;
     		}
-    	} else if (previousBuild.getResult().isWorseOrEqualTo(Result.FAILURE)) {
-    		return EMPTY_RESULT;
-    	}
+    	} else {
+            Result prevBuildResult = previousBuild.getResult();
+            if (prevBuildResult != null && prevBuildResult.isWorseOrEqualTo(Result.FAILURE)) {
+                return EMPTY_RESULT;
+            }
+        }
     	
     	List<FindBugsResultAction> currentActions = ActionRetriever.getResult(build, Result.UNSTABLE, FindBugsResultAction.class);
 		if (currentActions.isEmpty()) {

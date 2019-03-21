@@ -1,5 +1,6 @@
 package hudson.plugins.cigame;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -82,7 +83,7 @@ public class ScoreCardAction implements Action {
         return players;
     }
     
-    private static class UserDisplayNameComparator implements Comparator<User> {
+    private static class UserDisplayNameComparator implements Comparator<User>, Serializable {
         @Override
         public int compare(User arg0, User arg1) {
             return arg0.getDisplayName().compareToIgnoreCase(arg1.getDisplayName());

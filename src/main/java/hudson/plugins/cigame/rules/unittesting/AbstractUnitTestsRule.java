@@ -43,15 +43,16 @@ public abstract class AbstractUnitTestsRule implements AggregatableRule<Integer>
      */
     private AbstractBuild<?, ?> getPreviousBuildWithResults(AbstractBuild<?, ?> previousBuild) {
         while(previousBuild != null) {
-        	if (previousBuild.getResult() != null) {
-	            if (previousBuild.getResult().isBetterThan(Result.FAILURE)) {
+            Result prevBuildResult = previousBuild.getResult();
+        	if (prevBuildResult != null) {
+	            if (prevBuildResult.isBetterThan(Result.FAILURE)) {
 	                @SuppressWarnings("unchecked")
 	                AbstractTestResultAction action = previousBuild.getAction(AbstractTestResultAction.class);
 	                if (action != null) {
 	                    return previousBuild;
 	                }
 	                // fall through
-	            } else if (previousBuild.getResult().isWorseOrEqualTo(Result.NOT_BUILT)) { 
+	            } else if (prevBuildResult.isWorseOrEqualTo(Result.NOT_BUILT)) { 
 	                // fall through
 	            } else {
 	                return previousBuild;

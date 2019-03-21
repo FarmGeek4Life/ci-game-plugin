@@ -48,19 +48,24 @@ public class DefaultCheckstyleRule implements AggregatableRule<Integer> {
 	@Override
 	public RuleResult<Integer> evaluate(AbstractBuild<?, ?> previousBuild,
 			AbstractBuild<?, ?> build) {
-		
-		if (build != null && build.getResult() != null && build.getResult().isWorseOrEqualTo(Result.FAILURE)) {
-    		return RuleResult.EMPTY_INT_RESULT;
-    	}
-    	
+        if (build != null) {
+            Result buildResult = build.getResult();
+            if (buildResult != null && buildResult.isWorseOrEqualTo(Result.FAILURE)) {
+                return RuleResult.EMPTY_INT_RESULT;
+            }
+        }
+
     	if (previousBuild == null) {
     		if ( !(build instanceof MavenBuild)) {
     			// backward compatibility
     			return RuleResult.EMPTY_INT_RESULT;
     		}
-    	} else if (previousBuild.getResult().isWorseOrEqualTo(Result.FAILURE)) {
-    		return RuleResult.EMPTY_INT_RESULT;
-    	}
+    	} else {
+            Result prevBuildResult = previousBuild.getResult();
+            if (prevBuildResult != null && prevBuildResult.isWorseOrEqualTo(Result.FAILURE)) {
+                return RuleResult.EMPTY_INT_RESULT;
+            }
+        }
     	
     	List<CheckStyleResultAction> currentActions = ActionRetriever.getResult(build, Result.UNSTABLE, CheckStyleResultAction.class);
     	if (!hasNoErrors(currentActions)) {

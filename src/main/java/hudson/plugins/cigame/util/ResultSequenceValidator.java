@@ -26,7 +26,12 @@ public class ResultSequenceValidator {
     public boolean isValid(AbstractBuild<?,?> build) {
         int buildCount = 0;
         while (buildCount < sequenceLength) {
-            if ((build == null) || build.getResult().isWorseThan(resultThreshold)) {
+            if (build == null) {
+                return false;
+            }
+            
+            Result buildResult = build.getResult();
+            if (buildResult == null || buildResult.isWorseThan(resultThreshold)) {
                 return false;
             }
             build = build.getPreviousBuild();

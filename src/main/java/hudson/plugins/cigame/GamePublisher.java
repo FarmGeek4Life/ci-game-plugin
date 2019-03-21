@@ -1,6 +1,7 @@
 package hudson.plugins.cigame;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -151,7 +152,7 @@ public class GamePublisher extends Notifier {
         return (!players.isEmpty());
     }
 
-    public static class UsernameCaseinsensitiveComparator implements Comparator<User> {
+    public static class UsernameCaseinsensitiveComparator implements Comparator<User>, Serializable {
         @Override
         public int compare(User arg0, User arg1) {
             return arg0.getId().compareToIgnoreCase(arg1.getId());

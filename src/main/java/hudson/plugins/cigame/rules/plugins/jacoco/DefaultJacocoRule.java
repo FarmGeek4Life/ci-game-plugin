@@ -59,14 +59,23 @@ public class DefaultJacocoRule implements AggregatableRule<Double> {
     public RuleResult<Double> evaluate(AbstractBuild<?, ?> previousBuild,
         AbstractBuild<?, ?> build) {
 
-        if (build == null ||
-            build.getResult() == null ||
-            build.getResult().isWorseOrEqualTo(Result.FAILURE)) {
+        if (build == null) {
             return EMPTY_RESULT;
         }
 
-        if (previousBuild == null ||
-            previousBuild.getResult().isWorseOrEqualTo(Result.FAILURE)) {
+		Result buildResult = build.getResult();
+        if (buildResult == null ||
+            buildResult.isWorseOrEqualTo(Result.FAILURE)) {
+            return EMPTY_RESULT;
+        }
+
+        if (previousBuild == null) {
+            return EMPTY_RESULT;
+        }
+
+        Result prevBuildResult = previousBuild.getResult();
+        if (prevBuildResult == null ||
+            prevBuildResult.isWorseOrEqualTo(Result.FAILURE)) {
             return EMPTY_RESULT;
         }
 
