@@ -1,12 +1,13 @@
 <?jelly escape-by-default='true'?>
-<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:c="/lib/cigame">
 	<f:section title="${%cigame.title}">
 		<f:entry title="${%cigame.namesarecasesensitive}" help="/plugin/ci-game/namesarecasesensitive.html">
 			<f:checkbox field="namesAreCaseSensitive" />
 		</f:entry>
 	    <f:advanced title="${%cigame.unittests.subtitle}">
 			<f:entry title="${%cigame.unittests.subtitle}">
-				<table width="100%" style="border: 1px solid #aaa">
+				<!-- TODO remove and use div instead after baseline is 2.264 or newer -->
+				<c:blockWrapper width="100%" style="border: 1px solid #aaa">
 					<f:entry title="${%cigame.unittests.marksForIncreasingPassedTestsByOne}" field="passedTestIncreasingPoints">
 						<f:textbox />
 					</f:entry>
@@ -25,7 +26,7 @@
 					<f:entry title="${%cigame.unittests.marksForDecreasingSkippedTestsByOne}" field="skippedTestDecreasingPoints">
 						<f:textbox />
 					</f:entry>
-				</table>
+				</c:blockWrapper>
 			</f:entry>
 	    </f:advanced>
 	</f:section>
